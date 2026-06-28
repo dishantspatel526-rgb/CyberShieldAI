@@ -49,11 +49,6 @@ def index_redirect():
 # URL Scanner Page
 # ==========================
 
-@app.route("/scanner")
-def scanner():
-    return render_template("scanner.html")
-
-
 @app.route("/scan", methods=["POST"])
 def scan_url():
     url = request.form.get("url")
@@ -63,6 +58,7 @@ def scan_url():
         result="SAFE",
         score=90
     )
+
 # ==========================
 # Password Checker Page
 # ==========================
@@ -122,25 +118,6 @@ def dashboard():
         dangerous=dangerous,
         history=history
     )
-# ==========================
-# URL Scanner API
-# ==========================
-
-@app.route("/scan_url", methods=["POST"])
-def scan_url():
-
-    data = request.get_json()
-    url = data.get("url", "").lower().strip()
-
-    score = 100
-    reasons = []
-
-    if not url:
-        return jsonify({
-            "status": "ERROR",
-            "score": 0,
-            "reasons": ["Please enter a URL."]
-        })
 
     if "http://" in url:
         score -= 25
