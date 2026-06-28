@@ -311,7 +311,7 @@ async function scanURL() {
         return;
     }
 
-    let response = await fetch("/scan_url", {
+    let response = await fetch("/scan", {
 
         method: "POST",
 
@@ -319,11 +319,10 @@ async function scanURL() {
             "Content-Type": "application/json"
         },
 
-        body: JSON.stringify({
-            url: url
-        })
+        data =  requestAnimationFrame.get__json()
+            url: data.get("url")  
 
-    });
+    })
 
     let data = await response.json();
 

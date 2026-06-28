@@ -41,23 +41,24 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/index.html")
-def index_redirect():
-    return render_template("index.html")
-
 # ==========================
 # URL Scanner Page
 # ==========================
 
+@app.route("/scanner")
+def scanner():
+    return render_template("scanner.html")
+
 @app.route("/scan", methods=["POST"])
 def scan_url():
-    url = request.form.get("url")
+    data = request.get_json()
+    url = data.get("url")
 
-    return render_template(
-        "scanner.html",
-        result="SAFE",
-        score=90
-    )
+return jsonify ({
+    "status": "SAFE",
+     "score": 90,
+     "reasons": ["NO threats detected"]
+    })
 
 # ==========================
 # Password Checker Page
