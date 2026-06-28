@@ -1,0 +1,130 @@
+<!-- ================= CONTACT SECTION ================= -->
+
+<section id="contact">
+
+    <h2>Developer Contact</h2>
+
+    <div class="contact-box">
+
+        <div class="contact-item">
+            <i class="fa-solid fa-user"></i>
+            <h3>Developer</h3>
+            <p>Dishant S. Patel</p>
+        </div>
+
+        <div class="contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <h3>Email</h3>
+            <p>
+                <a href="mailto:dishantspatel526@gmail.com">
+                    dishantspatel526@gmail.com
+                </a>
+            </p>
+        </div>
+
+        <div class="contact-item">
+            <i class="fa-brands fa-github"></i>
+            <h3>GitHub</h3>
+            <p>
+                <a href="#" target="_blank">
+                    GitHub Profile (Coming Soon)
+                </a>
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <h3>Cyber Shield AI</h3>
+
+    <p>AI Powered Cyber Security Toolkit</p>
+
+    <p>Developed By <strong>Dishant S. Patel</strong></p>
+
+    <p>📧 dishantspatel526@gmail.com</p>
+
+    <p>© 2026 All Rights Reserved.</p>
+
+</footer>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Email Phishing Detector</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<nav>
+
+<div class="logo">
+<i class="fa-solid fa-shield-halved"></i>
+Cyber Shield AI
+</div>
+
+<ul>
+
+<li><a href="index.html">Home</a></li>
+<li><a href="scanner.html">URL Scanner</a></li>
+<li><a href="password.html">Password</a></li>
+<li><a href="email.html">Email</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+
+</ul>
+
+</nav>
+
+<section class="scanner-page">
+
+<h1>AI Email Phishing Detector</h1>
+
+<p>Paste an email below to check if it looks suspicious.</p>
+
+<div class="scanner-box">
+
+<textarea
+id="emailInput"
+placeholder="Paste email content here..."
+rows="10"></textarea>
+
+<br><br>
+
+<button onclick="scanEmail()">
+
+Analyze Email
+
+</button>
+
+</div>
+
+<div id="emailResult" class="result-box">
+
+<h2>Waiting...</h2>
+
+<p>Paste an email and click Analyze.</p>
+
+</div>
+
+</section>
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>

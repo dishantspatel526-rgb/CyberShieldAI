@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cyber Shield AI Dashboard</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<nav>
+
+<div class="logo">
+<i class="fa-solid fa-shield-halved"></i>
+Cyber Shield AI
+</div>
+
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/scanner">URL Scanner</a></li>
+    <li><a href="/password">Password</a></li>
+    <li><a href="/email">Email</a></li>
+    <li><a href="/dashboard">Dashboard</a></li>
+</ul>
+
+<section class="dashboard">
+
+<h1>Cyber Security Dashboard</h1>
+
+<div class="dashboard-grid">
+
+<div class="dash-card safe-card">
+<i class="fa-solid fa-circle-check"></i>
+<h2>{{ safe }}</h2>
+<p>Safe Scans</p>
+</div>
+
+<div class="dash-card warning-card">
+<i class="fa-solid fa-triangle-exclamation"></i>
+<h2>{{ suspicious }}</h2>
+<p>Suspicious</p>
+</div>
+
+<div class="dash-card danger-card">
+<i class="fa-solid fa-skull-crossbones"></i>
+<h2>{{ dangerous }}</h2>
+<p>Dangerous</p>
+</div>
+
+<div class="dash-card total-card">
+<i class="fa-solid fa-chart-line"></i>
+<h2>{{ total }}</h2>
+<p>Total Scans</p>
+</div>
+
+</div>
+
+<div class="recent-scans">
+
+<h2>Recent Scan Activity</h2>
+
+<table>
+
+<tr>
+<th>Time</th>
+<th>URL</th>
+<th>Status</th>
+<th>Score</th>
+</tr>
+
+<tbody>
+
+{% for item in history %}
+
+<tr>
+
+<td>{{ item[3] }}</td>
+
+<td>{{ item[0] }}</td>
+
+<td>{{ item[1] }}</td>
+
+<td>{{ item[2] }}/100</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</html>
+<a href="/download_report" class="btn">
+    📄 Download PDF Report
