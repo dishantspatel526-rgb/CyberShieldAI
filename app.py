@@ -218,8 +218,7 @@ def download_report():
     pdf.build(elements)
 
     return send_file("CyberShieldAI_Report.pdf", as_attachment=True)
-@app.route("/download_report")
-def download_report():
+
 
     file_path = "CyberShieldAI_Report.pdf"
 
