@@ -38,7 +38,7 @@ init_db()
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return "<h1>CyberShield AI Working</h1>"
 
 
 # ==========================
