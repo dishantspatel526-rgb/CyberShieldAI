@@ -83,102 +83,110 @@ def email():
 @app.route("/scan", methods=["POST"])
 def scan_url():
 
-    data = request.get_json()
+    try:
 
-    url = data.get("url")
+        data = request.get_json()
+
+        if not data:
+            return jsonify({
+                "error":"No data received"
+            })
 
 
-    if not url:
+        url = data.get("url")
+
+
+        if not url:
+            return jsonify({
+                "error":"URL required"
+            })
+
+
+        suspicious_words = [
+
+            "login",
+            "verify",
+            "bank",
+            "password",
+            "free",
+            "gift"
+
+        ]
+
+
+        score = 100
+        status = "Safe"
+
+
+        for word in suspicious_words:
+
+            if word in url.lower():
+
+                score -= 15
+                status = "Suspicious"
+
+
+
+        if score < 50:
+
+            status = "Danger"
+
+
+
+        conn = sqlite3.connect("database.db")
+
+        cursor = conn.cursor()
+
+
+        cursor.execute("""
+
+        INSERT INTO scans
+
+        (url,status,score,scan_time)
+
+        VALUES (?,?,?,?)
+
+        """,
+
+        (
+
+            url,
+
+            status,
+
+            score,
+
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        ))
+
+
+        conn.commit()
+
+        conn.close()
+
+
 
         return jsonify({
 
-            "error": "URL required"
+            "url":url,
+
+            "status":status,
+
+            "score":score
 
         })
 
 
-    # Simple security checking logic
-
-    suspicious_words = [
-
-        "login",
-        "verify",
-        "bank",
-        "password",
-        "free",
-        "gift"
-
-    ]
+    except Exception as e:
 
 
-    score = 100
-    status = "Safe"
+        return jsonify({
 
+            "error":str(e)
 
-    for word in suspicious_words:
-
-        if word in url.lower():
-
-            score -= 15
-            status = "Suspicious"
-
-
-
-    if score < 50:
-
-        status = "Danger"
-
-
-
-    # Save scan result
-
-    conn = sqlite3.connect("database.db")
-
-    cursor = conn.cursor()
-
-
-    cursor.execute("""
-
-    INSERT INTO scans
-
-    (url,status,score,scan_time)
-
-    VALUES (?,?,?,?)
-
-    """,
-
-    (
-
-        url,
-
-        status,
-
-        score,
-
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    ))
-
-
-    conn.commit()
-
-    conn.close()
-
-
-
-    return jsonify({
-
-        "url":url,
-
-        "status":status,
-
-        "score":score
-
-    })
-
-
-
-
+        }),500
+    
 
 # ==========================
 # Dashboard

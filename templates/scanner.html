@@ -1,31 +1,113 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cyber Shield AI</title>
+<title>Cyber Shield AI - URL Scanner</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
+
 
 <body>
 
-<h1>CyberShieldAI Website Scanner</h1>
 
-<input type="text" id="urlInput">
+<div class="container">
 
-<button type="button" onclick="scanURL()">
-    Scan URL
+
+<h1>🛡 Cyber Shield AI</h1>
+
+<h2>URL Security Scanner</h2>
+
+
+<input 
+type="text" 
+id="url"
+placeholder="Enter Website URL">
+
+
+<button onclick="scanURL()">
+Scan URL
 </button>
+
 
 <div id="result"></div>
 
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</div>
+
+
+
+<script>
+
+
+function scanURL(){
+
+
+let url = document.getElementById("url").value;
+
+
+
+fetch("/scan",{
+
+
+method:"POST",
+
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+
+body:JSON.stringify({
+
+url:url
+
+})
+
+
+})
+
+
+
+.then(res=>res.json())
+
+
+.then(data=>{
+
+
+document.getElementById("result").innerHTML=`
+
+<h3>Result</h3>
+
+<p>URL : ${data.url}</p>
+
+<p>Status : ${data.status}</p>
+
+<p>Security Score : ${data.score}%</p>
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+</script>
+
 
 </body>
+
 </html>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% if result %}
+<div class="result">
+    {{ result }}
+</div>
+{% endif %}

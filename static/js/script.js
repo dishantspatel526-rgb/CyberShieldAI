@@ -86,7 +86,7 @@ async function scanURL() {
 
     try {
 
-        const response = await fetch("/scan_url", {
+        const response = await fetch("/scan", {
 
             method: "POST",
 
