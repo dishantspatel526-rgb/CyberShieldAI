@@ -304,13 +304,7 @@ console.log(
 
 async function scanURL() {
 
-    let url = document.getElementById("urlInput").value;
-
-    if (url == "") {
-        alert("Please Enter URL");
-        return;
-    }
-
+    let url = document.getElementById("urlInput").value;>
     let response = await fetch("/scan", {
         method: "POST",
 
@@ -597,3 +591,5 @@ animateValue("warningCount",39);
 animateValue("dangerCount",18);
 
 animateValue("totalCount",215);
+<script scr="{{ url_for('static',
+filename='js/script.js') }}"></script>

@@ -1,19 +1,26 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Website Scanner</title>
+    <title>Website Scanner</title>
 </head>
 
 <body>
 
 <h1>CyberShieldAI Website Scanner</h1>
 
-<form action="/scan" method="POST">
-    <input type="text" name="url">
+<input type="text" id="urlInput">
 
-    <button type="submit">Scan</button>
-        
-</form>
+<button type="button" onclick="scanURL()">
+    Scan URL
+</button>
+
+<div id="result"></div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
 
 {% if result %}
     <h2>Result: {{ result }}</h2>
