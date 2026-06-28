@@ -8,19 +8,17 @@
 
 <h1>CyberShieldAI Website Scanner</h1>
 
-<form action="/scan" method="post">
+<form action="/scan" method="POST">
+    <input type="text"
+           name="url"
+           placeholder="Enter Website URL">
 
-<input 
-type="text" 
-name="url" 
-placeholder="Enter Website URL">
-
-<button type="submit">
-Scan Website
-</button>
-
+    <button type="submit">
+        Scan Website
+    </button>
 </form>
 
-
-</body>
-</html>
+{% if result %}
+    <h2>Result: {{ result }}</h2>
+    <h3>Score: {{ score }}</h3>
+{% endif %}

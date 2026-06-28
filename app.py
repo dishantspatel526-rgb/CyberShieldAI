@@ -54,6 +54,15 @@ def scanner():
     return render_template("scanner.html")
 
 
+@app.route("/scan", methods=["POST"])
+def scan_url():
+    url = request.form.get("url")
+
+    return render_template(
+        "scanner.html",
+        result="SAFE",
+        score=90
+    )
 # ==========================
 # Password Checker Page
 # ==========================
