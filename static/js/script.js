@@ -312,17 +312,17 @@ async function scanURL() {
     }
 
     let response = await fetch("/scan", {
-
         method: "POST",
 
         headers: {
             "Content-Type": "application/json"
         },
 
-        data =  requestAnimationFrame.get__json()
-            url: data.get("url")  
+        body: JSON.stringify({
+            url: url
+        })
 
-    })
+    });
 
     let data = await response.json();
 

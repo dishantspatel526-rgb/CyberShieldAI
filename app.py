@@ -51,8 +51,7 @@ def scanner():
 
 @app.route("/scan", methods=["POST"])
 def scan_url():
-    data = request.get_json()
-    url = data.get("url")
+    url = request.get_json()
 
     return jsonify ({
         "status": "SAFE",
