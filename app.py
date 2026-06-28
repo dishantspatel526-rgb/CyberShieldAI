@@ -218,7 +218,48 @@ def download_report():
     pdf.build(elements)
 
     return send_file("CyberShieldAI_Report.pdf", as_attachment=True)
+@app.route("/download_report")
+def download_report():
+
+    file_path = "CyberShieldAI_Report.pdf"
+
+    doc = SimpleDocTemplate(file_path)
+
+    styles = getSampleStyleSheet()
+
+    content = []
+
+    content.append(
+        Paragraph(
+            "CyberShieldAI Security Report",
+            styles["Title"]
+        )
+    )
+
+    content.append(
+        Paragraph(
+            """
+            Project: CyberShieldAI
+
+            Features:
+            - Website Scanner
+            - Password Strength Checker
+            - Email Security Checker
+            - Security Dashboard
+
+            Report Generated Successfully.
+            """,
+            styles["BodyText"]
+        )
+    )
+
+    doc.build(content)
+
+    return send_file(
+        file_path,
+        as_attachment=True
+    )
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
     
