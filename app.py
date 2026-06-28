@@ -51,12 +51,14 @@ def scanner():
 
 @app.route("/scan", methods=["POST"])
 def scan_url():
-    url = request.get_json()
+    data = request.get_json(force=True)
 
-    return jsonify ({
+    url = data.get("url")
+
+    return jsonify({
         "status": "SAFE",
         "score": 90,
-        "reasons": ["NO threats detected"]
+        "reasons": ["No threats detected"]
     })
 
 # ==========================
@@ -210,4 +212,4 @@ import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port)
