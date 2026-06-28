@@ -185,7 +185,6 @@ def scan_url():
 
 @app.route("/download_report")
 def download_report():
-
     styles = getSampleStyleSheet()
     pdf = SimpleDocTemplate("CyberShieldAI_Report.pdf")
 
@@ -204,7 +203,6 @@ def download_report():
     """)
 
     rows = cursor.fetchall()
-
     conn.close()
 
     for row in rows:
@@ -218,49 +216,8 @@ def download_report():
     pdf.build(elements)
 
     return send_file("CyberShieldAI_Report.pdf", as_attachment=True)
+import os
 
-
-    file_path = "CyberShieldAI_Report.pdf"
-
-    doc = SimpleDocTemplate(file_path)
-
-    styles = getSampleStyleSheet()
-
-    content = []
-
-    content.append(
-        Paragraph(
-            "CyberShieldAI Security Report",
-            styles["Title"]
-        )
-    )
-
-    content.append(
-        Paragraph(
-            """
-            Project: CyberShieldAI
-
-            Features:
-            - Website Scanner
-            - Password Strength Checker
-            - Email Security Checker
-            - Security Dashboard
-
-            Report Generated Successfully.
-            """,
-            styles["BodyText"]
-        )
-    )
-
-    doc.build(content)
-
-    return send_file(
-        file_path,
-        as_attachment=True
-    )
-
- import os
-
-if _name_ == "_main_":
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=False)
