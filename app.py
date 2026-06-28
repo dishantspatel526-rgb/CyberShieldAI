@@ -1,7 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify , send_file
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -54,10 +54,10 @@ def scan_url():
     data = request.get_json()
     url = data.get("url")
 
-return jsonify ({
-    "status": "SAFE",
-     "score": 90,
-     "reasons": ["NO threats detected"]
+    return jsonify ({
+        "status": "SAFE",
+        "score": 90,
+        "reasons": ["NO threats detected"]
     })
 
 # ==========================
