@@ -41,6 +41,10 @@ def home():
     return render_template("index.html")
 
 
+@app.route("/index.html")
+def index_redirect():
+    return render_template("index.html")
+
 # ==========================
 # URL Scanner Page
 # ==========================
