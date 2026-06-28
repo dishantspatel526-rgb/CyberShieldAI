@@ -1,215 +1,455 @@
+import os
 import sqlite3
 from datetime import datetime
 
-from flask import Flask, render_template, request, jsonify , send_file
+from flask import Flask, render_template, request, jsonify, send_file
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
+
 app = Flask(__name__)
 
+
 # ==========================
-# Database Initialization
+# Database Setup
 # ==========================
 
 def init_db():
+
     conn = sqlite3.connect("database.db")
+
     cursor = conn.cursor()
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS scans(
+
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+
         url TEXT,
+
         status TEXT,
+
         score INTEGER,
+
         scan_time TEXT
+
     )
     """)
 
     conn.commit()
     conn.close()
 
+
+
 init_db()
 
 
+
 # ==========================
-# Home Page
+# Pages Routes
 # ==========================
+
 
 @app.route("/")
 def home():
+
     return render_template("index.html")
 
 
-# ==========================
-# URL Scanner Page
-# ==========================
 
 @app.route("/scanner")
 def scanner():
+
     return render_template("scanner.html")
 
-@app.route("/scan", methods=["POST"])
-def scan_url():
-    data = request.get_json(force=True)
 
-    url = data.get("url")
-
-    return jsonify({
-        "status": "SAFE",
-        "score": 90,
-        "reasons": ["No threats detected"]
-    })
-
-# ==========================
-# Password Checker Page
-# ==========================
 
 @app.route("/password")
 def password():
+
     return render_template("password.html")
 
 
-# ==========================
-# Email Checker Page
-# ==========================
 
 @app.route("/email")
 def email():
+
     return render_template("email.html")
+# ==========================
+# URL Scanner
+# ==========================
+
+@app.route("/scan", methods=["POST"])
+def scan_url():
+
+    data = request.get_json()
+
+    url = data.get("url")
+
+
+    if not url:
+
+        return jsonify({
+
+            "error": "URL required"
+
+        })
+
+
+    # Simple security checking logic
+
+    suspicious_words = [
+
+        "login",
+        "verify",
+        "bank",
+        "password",
+        "free",
+        "gift"
+
+    ]
+
+
+    score = 100
+    status = "Safe"
+
+
+    for word in suspicious_words:
+
+        if word in url.lower():
+
+            score -= 15
+            status = "Suspicious"
+
+
+
+    if score < 50:
+
+        status = "Danger"
+
+
+
+    # Save scan result
+
+    conn = sqlite3.connect("database.db")
+
+    cursor = conn.cursor()
+
+
+    cursor.execute("""
+
+    INSERT INTO scans
+
+    (url,status,score,scan_time)
+
+    VALUES (?,?,?,?)
+
+    """,
+
+    (
+
+        url,
+
+        status,
+
+        score,
+
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    ))
+
+
+    conn.commit()
+
+    conn.close()
+
+
+
+    return jsonify({
+
+        "url":url,
+
+        "status":status,
+
+        "score":score
+
+    })
+
+
+
 
 
 # ==========================
 # Dashboard
 # ==========================
 
+
 @app.route("/dashboard")
 def dashboard():
 
+
     conn = sqlite3.connect("database.db")
+
     cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM scans")
-    total = cursor.fetchone()[0]
 
-    cursor.execute("SELECT COUNT(*) FROM scans WHERE status='SAFE'")
-    safe = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM scans WHERE status='SUSPICIOUS'")
-    suspicious = cursor.fetchone()[0]
-
-    cursor.execute("SELECT COUNT(*) FROM scans WHERE status='DANGEROUS'")
-    dangerous = cursor.fetchone()[0]
-
-    cursor.execute("""
-    SELECT url, status, score, scan_time
-    FROM scans
-    ORDER BY id DESC
-    LIMIT 10
-    """)
-
-    history = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "dashboard.html",
-        total=total,
-        safe=safe,
-        suspicious=suspicious,
-        dangerous=dangerous,
-        history=history
+    cursor.execute(
+        "SELECT * FROM scans ORDER BY id DESC"
     )
 
-    if "http://" in url:
-        score -= 25
-        reasons.append("Website is not using HTTPS.")
 
-    if "@" in url:
-        score -= 20
-        reasons.append("Suspicious @ symbol found.")
+    scans = cursor.fetchall()
 
-    if ".xyz" in url:
-        score -= 20
-        reasons.append("Unknown domain extension.")
 
-    if "login" in url:
-        score -= 15
-        reasons.append("Login keyword detected.")
-
-    if "verify" in url:
-        score -= 15
-        reasons.append("Verification keyword detected.")
-
-    if len(url) > 45:
-        score -= 10
-        reasons.append("Very long URL.")
-
-    if score >= 80:
-        status = "SAFE"
-    elif score >= 50:
-        status = "SUSPICIOUS"
-    else:
-        status = "DANGEROUS"
-
-    # Save Scan in Database
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        INSERT INTO scans(url, status, score, scan_time)
-        VALUES (?, ?, ?, ?)
-    """, (
-        url,
-        status,
-        score,
-        datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-    ))
-
-    conn.commit()
     conn.close()
 
-    return jsonify({
-        "status": status,
-        "score": score,
-        "reasons": reasons
-    })
 
-@app.route("/download_report")
-def download_report():
+    return render_template(
+
+        "dashboard.html",
+
+        scans=scans
+
+    )
+
+
+
+
+
+# ==========================
+# PDF Report
+# ==========================
+
+
+@app.route("/report")
+def report():
+
+
+    filename = "CyberShield_Report.pdf"
+
+
+    doc = SimpleDocTemplate(filename)
+
+
     styles = getSampleStyleSheet()
-    pdf = SimpleDocTemplate("CyberShieldAI_Report.pdf")
 
-    elements = []
 
-    elements.append(Paragraph("Cyber Shield AI Report", styles["Title"]))
-    elements.append(Paragraph("Developer : Dishant Patel", styles["Normal"]))
+    content=[]
 
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
 
-    cursor.execute("""
-    SELECT url, status, score, scan_time
-    FROM scans
-    ORDER BY id DESC
-    """)
+    content.append(
 
-    rows = cursor.fetchall()
-    conn.close()
+        Paragraph(
 
-    for row in rows:
-        elements.append(
-            Paragraph(
-                f"{row[3]} | {row[0]} | {row[1]} | Score: {row[2]}",
-                styles["BodyText"]
-            )
+            "Cyber Shield AI Security Report",
+
+            styles["Title"]
+
         )
 
-    pdf.build(elements)
+    )
 
-    return send_file("CyberShieldAI_Report.pdf", as_attachment=True)
-import os
+
+    conn = sqlite3.connect("database.db")
+
+    cursor = conn.cursor()
+
+
+    cursor.execute(
+        "SELECT * FROM scans"
+    )
+
+
+    data = cursor.fetchall()
+
+
+    conn.close()
+
+
+
+    for scan in data:
+
+
+        text = f"""
+
+        URL : {scan[1]} <br/>
+
+        Status : {scan[2]} <br/>
+
+        Score : {scan[3]} <br/>
+
+        Time : {scan[4]}
+
+        """
+
+
+        content.append(
+
+            Paragraph(
+
+                text,
+
+                styles["Normal"]
+
+            )
+
+        )
+
+
+
+    doc.build(content)
+
+
+
+    return send_file(filename)
+
+# ==========================
+# Password Checker
+# ==========================
+
+
+@app.route("/check_password", methods=["POST"])
+def check_password():
+
+
+    data = request.get_json()
+
+
+    password = data.get("password")
+
+
+    if not password:
+
+        return jsonify({
+
+            "error":"Password required"
+
+        })
+
+
+    score = 0
+
+
+    if len(password) >= 8:
+
+        score += 25
+
+
+    if any(char.isupper() for char in password):
+
+        score += 25
+
+
+    if any(char.isdigit() for char in password):
+
+        score += 25
+
+
+    if any(char in "!@#$%^&*" for char in password):
+
+        score += 25
+
+
+
+    if score >= 75:
+
+        strength = "Strong"
+
+
+    elif score >= 50:
+
+        strength = "Medium"
+
+
+    else:
+
+        strength = "Weak"
+
+
+
+    return jsonify({
+
+        "strength":strength,
+
+        "score":score
+
+    })
+
+
+
+
+
+# ==========================
+# Email Security Checker
+# ==========================
+
+
+@app.route("/check_email", methods=["POST"])
+def check_email():
+
+
+    data = request.get_json()
+
+
+    email = data.get("email")
+
+
+    if not email:
+
+        return jsonify({
+
+            "error":"Email required"
+
+        })
+
+
+
+    suspicious = [
+
+        "gmail",
+
+        "yahoo",
+
+        "hotmail"
+
+    ]
+
+
+    status = "Normal"
+
+
+
+    for item in suspicious:
+
+        if item in email.lower():
+
+            status="Valid Email"
+
+
+
+    return jsonify({
+
+        "email":email,
+
+        "status":status
+
+    })
+
+
+
+
+
+# ==========================
+# Start Server
+# ==========================
+
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+
+
+    app.run(
+
+        debug=True
+
+    )

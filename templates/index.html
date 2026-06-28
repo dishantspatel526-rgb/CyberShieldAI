@@ -1,156 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cyber Shield AI</title>
+<title>Cyber Shield AI</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <script defer
-            src="{{ url_for('static', filename='js/script.js') }}"></script>
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
+
 <body>
-<h1 style="color: red;">TEST PAGE</h1>
-<canvas id="matrix"></canvas>
+
 
 <nav>
 
-    <div class="logo">
-        <i class="fa-solid fa-shield-halved"></i>
-        Cyber Shield AI
-    </div>
+<div class="logo">
+🛡 Cyber Shield AI
+</div>
 
-    <ul>
 
-        <li><a href="/">Home</a></li>
+<ul>
 
-        <li><a href="/scanner">URL Scanner</a></li>
+<li><a href="/">Home</a></li>
 
-        <li><a href="/password">Password Checker</a></li>
+<li><a href="/scanner">URL Scanner</a></li>
 
-        <li><a href="/email">Email Checker</a></li>
+<li><a href="/password">Password</a></li>
 
-        <li><a href="/dashboard">Dashboard</a></li>
+<li><a href="/email">Email</a></li>
 
-    </ul>
+<li><a href="/dashboard">Dashboard</a></li>
+
+
+</ul>
+
 
 </nav>
 
-<section class="hero">
 
-    <div class="hero-left">
 
-        <h1>
-            AI Powered
-            <span>Cyber Security</span>
-        </h1>
+<div class="hero">
 
-        <p>
 
-            Cyber Shield AI helps users detect suspicious URLs,
-            create strong passwords,
-            identify phishing emails,
-            and improve online safety using intelligent security tools.
+<h1>
+AI Powered Cyber Security Platform
+</h1>
 
-        </p>
 
-        <div class="hero-buttons">
+<p>
+Scan URLs, Check Password Strength and Protect Digital Identity
+</p>
 
-            <a href="/scanner" class="btn">
-                Scan Website
-            </a>
 
-            <a href="/dashboard" class="btn2">
-                Open Dashboard
-            </a>
+<a href="/scanner">
 
-        </div>
+<button>
+Start Security Scan
+</button>
 
-    </div>
+</a>
 
-    <div class="hero-right">
 
-        <i class="fa-solid fa-user-shield hero-icon"></i>
+</div>
 
-    </div>
 
-</section>
-
-<section class="features">
-
-<h2>Our Security Features</h2>
-
-<div class="feature-grid">
-            <div class="feature-card">
-            <i class="fa-solid fa-link"></i>
-            <h3>URL Scanner</h3>
-            <p>Detect phishing websites and suspicious URLs before opening them.</p>
-        </div>
-
-        <div class="feature-card">
-            <i class="fa-solid fa-key"></i>
-            <h3>Password Checker</h3>
-            <p>Check password strength and get suggestions for stronger passwords.</p>
-        </div>
-
-        <div class="feature-card">
-            <i class="fa-solid fa-envelope-circle-check"></i>
-            <h3>Email Security</h3>
-            <p>Identify suspicious and phishing email patterns to stay protected.</p>
-        </div>
-
-        <div class="feature-card">
-            <i class="fa-solid fa-chart-line"></i>
-            <h3>Security Dashboard</h3>
-            <p>Monitor scan history, statistics and security reports in one place.</p>
-        </div>
-
-    </div>
-
-</section>
-
-<section class="about">
-
-    <h2>Why Cyber Shield AI?</h2>
-
-    <p>
-
-        Cyber Shield AI is an intelligent cyber security web application developed
-        using Python Flask, HTML, CSS, JavaScript and SQLite.
-        It helps users stay safe online by scanning URLs, checking password
-        strength, detecting phishing emails and generating security reports.
-
-    </p>
-
-</section>
-
-<footer>
-
-    <h3>Cyber Shield AI</h3>
-
-    <p>
-        AI Powered Cyber Security Solution
-    </p>
-
-    <p>
-        Developed by <strong>Dishant Patel</strong>
-    </p>
-
-    <p>
-        © 2026 All Rights Reserved
-    </p>
-
-</footer>
-
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
+
 </html>

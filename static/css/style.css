@@ -1189,3 +1189,329 @@ transition:.3s;
 .btn:hover{
 transform:scale(1.05);
 }
+/* =========================
+   Navigation Bar
+========================= */
+
+nav{
+    width:100%;
+    height:70px;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(10px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:999;
+    border-bottom:1px solid #00ff99;
+}
+
+.logo{
+    color:#00ff99;
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 15px #00ff99;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:25px;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+    transition:.3s;
+}
+
+nav ul li a:hover{
+    color:#00ff99;
+}
+
+/* =========================
+   Scanner Section
+========================= */
+
+.scanner{
+
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    padding-top:100px;
+
+}
+.scanner h1{
+
+    font-size:42px;
+
+    color:#00ff99;
+
+    margin-bottom:30px;
+
+    text-shadow:0 0 20px #00ff99;
+
+}
+
+.scanner input{
+
+    width:60%;
+
+    max-width:700px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:18px;
+
+    margin-bottom:20px;
+
+}
+
+.scanner button{
+
+    padding:15px 40px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00ff99;
+
+    color:black;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.scanner button:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:0 0 20px #09e88f;
+
+}
+/* =========================
+   Result Box
+========================= */
+
+#result{
+
+    width:70%;
+    max-width:750px;
+
+    margin-top:30px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid #00ff99;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    color:white;
+
+    box-shadow:0 0 20px rgba(0,255,153,.35);
+
+    animation:fadeIn .5s ease;
+
+}
+
+#result h2{
+
+    color:#00ff99;
+
+    margin-bottom:15px;
+
+}
+
+#result h3{
+
+    color:#00e6ff;
+
+    margin-bottom:15px;
+
+}
+
+#result ul{
+
+    padding-left:20px;
+
+}
+
+#result li{
+
+    margin:8px 0;
+
+}
+
+/* =========================
+   Hero Buttons
+========================= */
+
+button{
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 25px #00ff99;
+
+}
+
+/* =========================
+   Fade Animation
+========================= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media(max-width:768px){
+
+    nav{
+
+        flex-direction:column;
+
+        height:auto;
+
+        padding:15px;
+
+    }
+
+    nav ul{
+
+        flex-direction:column;
+
+        gap:12px;
+
+        margin-top:15px;
+
+    }
+
+    .scanner h1{
+
+        font-size:30px;
+
+        text-align:center;
+
+    }
+
+    .scanner input{
+
+        width:90%;
+
+    }
+
+    #result{
+
+        width:90%;
+
+    }
+
+}
+nav{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+
+}
+
+
+.logo{
+
+font-size:25px;
+font-weight:bold;
+
+}
+
+
+
+nav ul{
+
+display:flex;
+gap:25px;
+list-style:none;
+
+}
+
+
+nav a{
+
+color:white;
+text-decoration:none;
+
+}
+
+
+.hero{
+
+text-align:center;
+margin-top:120px;
+
+}
+
+
+.hero h1{
+
+font-size:45px;
+
+}
+
+
+button{
+
+padding:12px 25px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+}
