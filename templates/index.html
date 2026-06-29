@@ -1,180 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cyber Shield AI</title>
+    <title>Cyber Shield AI</title>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
 
-<style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-body{
-    background:#050816;
-    color:white;
-    font-family:Poppins,sans-serif;
-}
-
-.hero{
-    text-align:center;
-    margin-top:80px;
-}
-
-.logo{
-    font-size:48px;
-    color:#00ff99;
-    text-shadow:0 0 20px #00ff99;
-}
-
-.hero h1{
-    margin-top:20px;
-}
-
-.hero p{
-    font-size:20px;
-    color:#aaa;
-}
-
-.buttons{
-    margin-top:40px;
-}
-
-.buttons a{
-    display:inline-block;
-    margin:10px;
-    padding:15px 25px;
-    background:#00ff99;
-    color:black;
-    text-decoration:none;
-    border-radius:10px;
-    font-weight:bold;
-    transition:.3s;
-}
-
-.buttons a:hover{
-    box-shadow:0 0 25px #00ff99;
-    transform:scale(1.05);
-}
-
-.features{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:60px;
-    flex-wrap:wrap;
-}
-
-.card{
-    background:#111827;
-    padding:25px;
-    width:220px;
-    border-radius:15px;
-    border:1px solid #00ff99;
-    text-align:center;
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 0 20px #00ff99;
-}
-
-.card h2{
-    font-size:40px;
-    color:#00ff99;
-}
-
-.footer{
-    margin-top:60px;
-    text-align:center;
-    color:#888;
-    padding-bottom:20px;
-}
-
-</style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+          rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="hero">
+<header>
 
-<div class="logo">
-🛡 Cyber Shield AI
-</div>
+    <nav class="navbar">
 
-<h1>Cyber Security Analysis Platform</h1>
+        <h2 class="logo">
+            🛡 Cyber Shield AI
+        </h2>
 
-<p>
-Scan URLs • Check Passwords • Verify Emails • Analyze IP • Generate Hash
-</p>
+        <ul class="nav-links">
 
-<div class="buttons">
+            <li><a href="/">Home</a></li>
 
-<a href="/scanner">🔍 URL Scanner</a>
+            <li><a href="/scanner">URL Scanner</a></li>
 
-<a href="/password">🔐 Password Checker</a>
+            <li><a href="/password">Password</a></li>
 
-<a href="/email">📧 Email Checker</a>
+            <li><a href="/email">Email</a></li>
 
-<a href="/ip_checker">🌐 IP Checker</a>
+            <li><a href="/ip">IP Checker</a></li>
 
-<a href="/hash_checker">🧬 Hash Generator</a>
+            <li><a href="/hash">Hash</a></li>
 
-<a href="/dashboard">📊 Dashboard</a>
+            <li><a href="/dashboard">Dashboard</a></li>
 
-<a href="/report">📄 PDF Report</a>
+        </ul>
 
-</div>
+    </nav>
 
-</div>
+</header>
 
-<div class="features">
+<!-- Hero Section -->
 
-<div class="card">
-<h2>🔍</h2>
-<h3>URL Scanner</h3>
-<p>Detect suspicious websites instantly.</p>
-</div>
+<section class="hero">
 
-<div class="card">
-<h2>🔐</h2>
-<h3>Password Checker</h3>
-<p>Analyze password strength.</p>
-</div>
+    <div class="hero-content">
 
-<div class="card">
-<h2>📧</h2>
-<h3>Email Checker</h3>
-<p>Validate email addresses.</p>
-</div>
+        <h1>
+            Welcome to
+            <span>Cyber Shield AI</span>
+        </h1>
 
-<div class="card">
-<h2>🌐</h2>
-<h3>IP Checker</h3>
-<p>Verify IP address format.</p>
-</div>
+        <p>
 
-<div class="card">
-<h2>🧬</h2>
-<h3>Hash Generator</h3>
-<p>Generate SHA-256 hashes.</p>
-</div>
+            Scan suspicious URLs, check password strength,
+            validate emails, inspect IP addresses and
+            generate SHA-256 hashes using one powerful
+            cyber security dashboard.
 
-<div class="card">
-<h2>📄</h2>
-<h3>PDF Report</h3>
-<p>Download security scan reports.</p>
-</div>
+        </p>
 
-</div>
+        <div class="hero-buttons">
 
-<div class="footer">
-© 2026 Cyber Shield AI | Developed by Dishant Patel
-</div>
+            <a href="/scanner" class="btn">
+                Start Scanning
+            </a>
+
+            <a href="/dashboard" class="btn secondary">
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Features Section -->
+
+<section class="features">
+
+    <h2>Our Security Tools</h2>
+
+    <div class="cards">
+
+                <div class="card">
+            <h3>🌐 URL Scanner</h3>
+            <p>Detect suspicious and phishing websites quickly.</p>
+            <a href="/scanner" class="card-btn">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>🔑 Password Checker</h3>
+            <p>Check the strength of your passwords.</p>
+            <a href="/password" class="card-btn">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>📧 Email Validator</h3>
+            <p>Verify email format and validity.</p>
+            <a href="/email" class="card-btn">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>🌍 IP Checker</h3>
+            <p>Validate IPv4 and IPv6 addresses.</p>
+            <a href="/ip" class="card-btn">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>#️⃣ SHA-256 Generator</h3>
+            <p>Create secure SHA-256 hashes instantly.</p>
+            <a href="/hash" class="card-btn">Open</a>
+        </div>
+
+        <div class="card">
+            <h3>📊 Dashboard</h3>
+            <p>View scan history and generate PDF reports.</p>
+            <a href="/dashboard" class="card-btn">Open</a>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- About -->
+
+<section class="about">
+
+    <h2>About Cyber Shield AI</h2>
+
+    <p>
+
+        Cyber Shield AI is a Flask-based cyber security
+        project developed for educational purposes.
+        It combines multiple security tools in one
+        easy-to-use dashboard with a professional
+        hacker-themed interface.
+
+    </p>
+
+</section>
+
+<!-- Footer -->
+
+<footer>
+
+    <p>
+
+        © 2026 Cyber Shield AI |
+        Developed using Flask & Python
+
+    </p>
+
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>

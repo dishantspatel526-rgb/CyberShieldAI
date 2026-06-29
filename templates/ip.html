@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cyber Shield AI | Email Validator</title>
+    <title>Cyber Shield AI | IP Checker</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -25,6 +25,7 @@
         <h2 class="logo">🛡 Cyber Shield AI</h2>
 
         <ul class="nav-links">
+
             <li><a href="/">Home</a></li>
             <li><a href="/scanner">Scanner</a></li>
             <li><a href="/password">Password</a></li>
@@ -32,6 +33,7 @@
             <li><a href="/ip">IP Checker</a></li>
             <li><a href="/hash">Hash</a></li>
             <li><a href="/dashboard">Dashboard</a></li>
+
         </ul>
 
     </nav>
@@ -40,52 +42,62 @@
 
 <section class="tool-page">
 
-    <h1>📧 Email Validator</h1>
+    <h1>🌍 IP Address Checker</h1>
 
     <p>
-        Check whether an email address is valid.
+
+        Check whether an IPv4 or IPv6 address is valid.
+
     </p>
 
     <div class="tool-box">
 
         <input
-            type="email"
-            id="email"
-            placeholder="example@email.com">
+            type="text"
+            id="ip"
+            placeholder="192.168.1.1">
 
-        <button onclick="checkEmail()">
-            Validate Email
+        <button onclick="checkIP()">
+
+            Validate IP
+
         </button>
 
     </div>
 
-    <div id="result" class="result-box">
+    <div
+        id="result"
+        class="result-box">
 
-        Waiting for email...
+        Waiting for IP...
 
     </div>
 
 </section>
+
 <script>
 
-async function checkEmail(){
+async function checkIP(){
+
+let ip =
+document.getElementById("ip").value;
+
+if(ip.trim()==""){
 
 document.getElementById("result").innerHTML =
-"Checking...";
-
-let email =
-document.getElementById("email").value;
-
-if(email==""){
-
-document.getElementById("result").innerHTML =
-"❌ Enter Email";
+"❌ Enter IP Address";
 
 return;
 
 }
 
-fetch("/check_email",{
+document.getElementById("result").innerHTML =
+"Checking...";
+
+try{
+
+const response =
+await fetch("/check_ip",{
 
 method:"POST",
 
@@ -94,32 +106,34 @@ headers:{
 },
 
 body:JSON.stringify({
-email:email
+ip:ip
 })
 
-})
+});
 
-.then(res=>res.json())
-
-.then(data=>{
+const data =
+await response.json();
 
 document.getElementById("result").innerHTML =
 
-"Status: " +
-data.status +
+`
+<h3>IP Result</h3>
 
-"<br><br>Score: " +
-data.score +
-"/100";
+<p>Status:
+${data.status}</p>
 
-})
+<p>Score:
+${data.score}/100</p>
+`;
 
-.catch(()=>{
+}
+
+catch(e){
 
 document.getElementById("result").innerHTML =
 "❌ Server Error";
 
-});
+}
 
 }
 
@@ -129,7 +143,7 @@ document.getElementById("result").innerHTML =
 
 <p>
 
-© 2026 Cyber Shield AI | Email Validator
+© 2026 Cyber Shield AI | IP Checker
 
 </p>
 
@@ -138,4 +152,5 @@ document.getElementById("result").innerHTML =
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
+
 </html>

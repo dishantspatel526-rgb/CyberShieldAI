@@ -1,29 +1,39 @@
-import os
+from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 import sqlite3
 import hashlib
 import ipaddress
+import requests
+from email_validator import validate_email, EmailNotValidError
 from datetime import datetime
-
-from flask import Flask, render_template, request, jsonify, send_file
-
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+import os
 
 app = Flask(__name__)
 
-# ==========================
+DATABASE = "database.db"
+
+
+# ===============================
 # Database Setup
-# ==========================
+# ===============================
+
+def get_db():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
 
 def init_db():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
+    conn = get_db()
 
-    cursor.execute("""
+    conn.execute("""
     CREATE TABLE IF NOT EXISTS scans(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        url TEXT,
-        status TEXT,
+        scan_type TEXT,
+        input_value TEXT,
+        result TEXT,
         score INTEGER,
         scan_time TEXT
     )
@@ -32,75 +42,83 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 init_db()
 
-# ==========================
+
+# ===============================
 # Home
-# ==========================
+# ===============================
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-# ==========================
-# URL Scanner Page
-# ==========================
+# ===============================
+# Pages
+# ===============================
 
 @app.route("/scanner")
 def scanner():
     return render_template("scanner.html")
 
 
-# ==========================
-# URL Scanner
-# ==========================
+@app.route("/password")
+def password():
+    return render_template("password.html")
 
-@app.route("/scan", methods=["POST"])
-def scan():
 
-    data = request.get_json()
+@app.route("/email")
+def email():
+    return render_template("email.html")
 
-    url = data.get("url")
 
-    if not url:
-        return jsonify({
-            "url": "",
-            "status": "No URL Entered",
-            "score": 0
-        })
+@app.route("/ip")
+def ip():
+    return render_template("ip.html")
 
-    status = "Safe ✅"
-    score = 95
 
-    suspicious = [
-        "login",
-        "verify",
-        "bank",
-        "free",
-        "gift",
-        "paypal",
-        "secure",
-        "update"
-    ]
+@app.route("/hash")
+def hash_page():
+    return render_template("hash.html")
 
-    for word in suspicious:
-        if word in url.lower():
-            status = "Suspicious ⚠️"
-            score = 40
-            break
 
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
+@app.route("/dashboard")
+def dashboard():
 
-    cursor.execute(
+    conn = get_db()
+
+    scans = conn.execute(
+        "SELECT * FROM scans ORDER BY id DESC"
+    ).fetchall()
+
+    conn.close()
+
+    return render_template(
+        "dashboard.html",
+        scans=scans
+    )
+
+
+# ===============================
+# Save Scan
+# ===============================
+
+def save_scan(scan_type, value, result, score):
+
+    conn = get_db()
+
+    conn.execute(
         """
-        INSERT INTO scans(url,status,score,scan_time)
-        VALUES(?,?,?,?)
+        INSERT INTO scans
+        (scan_type,input_value,result,score,scan_time)
+        VALUES(?,?,?,?,?)
         """,
         (
-            url,
-            status,
+            scan_type,
+            value,
+            result,
             score,
             datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         )
@@ -109,38 +127,78 @@ def scan():
     conn.commit()
     conn.close()
 
+    # ===============================
+# URL Scanner API
+# ===============================
+
+@app.route("/scan_url", methods=["POST"])
+def scan_url():
+
+    data = request.get_json()
+
+    url = data.get("url", "")
+
+
+    if url == "":
+
+        return jsonify({
+
+            "status":"URL Missing",
+
+            "score":0
+
+        })
+
+
+    result = "Safe Website ✅"
+
+    score = 95
+
+
+
+    suspicious_words = [
+
+        "login",
+        "verify",
+        "bank",
+        "free",
+        "gift",
+        "update"
+
+    ]
+
+
+    for word in suspicious_words:
+
+
+        if word in url.lower():
+
+
+            result = "Suspicious Website ⚠️"
+
+            score = 40
+
+            break
+
+
+
     return jsonify({
-        "url": url,
-        "status": status,
-        "score": score
+
+        "status":result,
+
+        "score":score
+
     })
 
-
-# ==========================
-# Password Checker Page
-# ==========================
-
-@app.route("/password")
-def password():
-    return render_template("password.html")
-
-
-# ==========================
+# ===============================
 # Password Checker API
-# ==========================
-
+# ===============================
 @app.route("/check_password", methods=["POST"])
 def check_password():
 
     data = request.get_json()
 
-    password = data.get("password")
-
-    if not password:
-        return jsonify({
-            "strength": "Weak",
-            "score": 0
-        })
+    password = data.get("password", "")
 
     score = 0
 
@@ -153,163 +211,134 @@ def check_password():
     if any(c.isdigit() for c in password):
         score += 25
 
-    if any(c in "!@#$%^&*" for c in password):
+    if any(not c.isalnum() for c in password):
         score += 25
 
-    if score >= 75:
-        strength = "Strong 💪"
-    elif score >= 50:
-        strength = "Medium 🙂"
-    else:
+
+    if score < 50:
         strength = "Weak ❌"
+
+    elif score < 80:
+        strength = "Medium ⚠️"
+
+    else:
+        strength = "Strong ✅"
+
 
     return jsonify({
         "strength": strength,
         "score": score
     })
 
-# ==========================
-# Email Checker Page
-# ==========================
-
-@app.route("/email")
-def email():
-    return render_template("email.html")
-
-
-# ==========================
+# ===============================
 # Email Checker API
-# ==========================
+# ===============================
 
 @app.route("/check_email", methods=["POST"])
 def check_email():
 
-    data = request.get_json()
+    try:
 
-    email = data.get("email")
+        data = request.get_json()
 
-    if not email:
+        email = data.get("email", "")
+
+        if email.strip() == "":
+
+            return jsonify({
+                "status": "Email Missing",
+                "score": 0
+            })
+
+        status = "Valid Email ✅"
+        score = 95
+
+        if "@" not in email or "." not in email:
+
+            status = "Invalid Email ❌"
+            score = 20
+
+
         return jsonify({
-            "email": "",
-            "status": "Invalid Email"
+            "status": status,
+            "score": score
         })
 
-    status = "Safe Email ✅"
+    except Exception as e:
 
-    if "@" not in email or "." not in email:
-        status = "Invalid Email ❌"
+        return jsonify({
+            "status": str(e),
+            "score": 0
+        })
 
-    elif any(word in email.lower() for word in [
-        "support", "verify", "security", "admin", "update"
-    ]):
-        status = "Suspicious Email ⚠️"
-
-    return jsonify({
-        "email": email,
-        "status": status
-    })
-
-
-# ==========================
-# IP Checker Page
-# ==========================
-
-@app.route("/ip_checker")
-def ip_checker():
-    return render_template("ip_checker.html")
-
-
-# ==========================
+# ===============================
 # IP Checker API
-# ==========================
-
+# ===============================
 @app.route("/check_ip", methods=["POST"])
 def check_ip():
 
     data = request.get_json()
 
-    ip = data.get("ip")
+    ip = data.get("ip", "").strip()
 
     try:
+
         ipaddress.ip_address(ip)
 
         return jsonify({
-            "ip": ip,
-            "status": "Valid IP Address ✅"
+            "status": "Valid IP ✅",
+            "score": 100
         })
 
     except:
 
         return jsonify({
-            "ip": ip,
-            "status": "Invalid IP Address ❌"
+            "status": "Invalid IP ❌",
+            "score": 0
         })
 
 
-# ==========================
-# Hash Checker Page
-# ==========================
-
-@app.route("/hash_checker")
-def hash_checker():
-    return render_template("hash_checker.html")
-
-
-# ==========================
-# Hash Generator API
-# ==========================
-
+# ===============================
+# SHA-256 Hash Generator
+# ===============================
 @app.route("/generate_hash", methods=["POST"])
 def generate_hash():
 
     data = request.get_json()
 
-    text = data.get("text")
+    text = data.get("text", "").strip()
 
-    if not text:
+    if text == "":
 
         return jsonify({
             "hash": ""
         })
 
-    hash_value = hashlib.sha256(text.encode()).hexdigest()
+    hash_value = hashlib.sha256(
+        text.encode()
+    ).hexdigest()
 
     return jsonify({
         "hash": hash_value
     })
 
 
-# ==========================
-# Dashboard
-# ==========================
-
-@app.route("/dashboard")
-def dashboard():
-
-    conn = sqlite3.connect("database.db")
-
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM scans ORDER BY id DESC")
-
-    scans = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "dashboard.html",
-        scans=scans
-    )
-
-
-# ==========================
+# ===============================
 # PDF Report
-# ==========================
+# ===============================
 
 @app.route("/report")
 def report():
 
-    filename = "CyberShield_Report.pdf"
+    filename = "CyberShieldAI_Report.pdf"
+
+    conn = get_db()
+
+    scans = conn.execute(
+        "SELECT * FROM scans ORDER BY id DESC"
+    ).fetchall()
+
+    conn.close()
 
     doc = SimpleDocTemplate(filename)
 
@@ -324,37 +353,42 @@ def report():
         )
     )
 
-    conn = sqlite3.connect("database.db")
+    story.append(
+        Paragraph("<br/>", styles["Normal"])
+    )
 
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT * FROM scans")
-
-    data = cursor.fetchall()
-
-    conn.close()
-
-    for row in data:
+    for scan in scans:
 
         story.append(
             Paragraph(
                 f"""
-                URL : {row[1]}<br/>
-                Status : {row[2]}<br/>
-                Score : {row[3]}<br/>
-                Time : {row[4]}<br/><br/>
+                <b>Type:</b> {scan['scan_type']}<br/>
+                <b>Input:</b> {scan['input_value']}<br/>
+                <b>Result:</b> {scan['result']}<br/>
+                <b>Score:</b> {scan['score']}<br/>
+                <b>Time:</b> {scan['scan_time']}<br/><br/>
                 """,
-                styles["Normal"]
+                styles["BodyText"]
             )
         )
 
     doc.build(story)
 
-    return send_file(filename, as_attachment=True)
-# ==========================
-# Run Server
-# ==========================
+    return send_file(
+        filename,
+        as_attachment=True
+    )
+
+
+# ===============================
+# Run Flask
+# ===============================
 
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=5000
+    )
     

@@ -1,4 +1,5 @@
 Flask
-gunicorn
-reportlab
-openai  
+requests
+validators
+email-validator
+fpdf2

@@ -1,167 +1,271 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<title>Cyber Shield AI - URL Scanner</title>
+<meta charset="UTF-8">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-
-
-<style>
-
-body{
-
-background:#050816;
-
-color:white;
-
-font-family:Poppins;
-
-}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-.container{
-
-width:500px;
-
-margin:100px auto;
-
-background:#111827;
-
-padding:30px;
-
-border-radius:20px;
-
-border:1px solid #00ff99;
-
-text-align:center;
-
-box-shadow:0 0 20px #00ff99;
-
-}
+<title>Cyber Shield AI | URL Scanner</title>
 
 
-input{
-
-width:90%;
-
-padding:15px;
-
-border-radius:10px;
-
-border:none;
-
-margin:15px;
-
-}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
 
 
-
-button{
-
-padding:15px 25px;
-
-background:#00ff99;
-
-border:none;
-
-border-radius:10px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-
-
-.result{
-
-margin-top:20px;
-
-color:#00ff99;
-
-white-space:pre-line;
-
-font-size:18px;
-
-}
-
-
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+rel="stylesheet">
 
 
 </head>
 
 
-
 <body>
 
 
-<div class="container">
+<header>
+
+
+<nav class="navbar">
+
+
+<h2 class="logo">
+🛡 Cyber Shield AI
+</h2>
 
 
 
-<h1>🛡 Cyber Shield AI</h1>
+<ul class="nav-links">
 
 
-<h2>URL Security Scanner</h2>
+<li><a href="/">Home</a></li>
+
+<li><a href="/scanner">Scanner</a></li>
+
+<li><a href="/password">Password</a></li>
+
+<li><a href="/email">Email</a></li>
+
+<li><a href="/ip">IP Checker</a></li>
+
+<li><a href="/hash">Hash</a></li>
+
+<li><a href="/dashboard">Dashboard</a></li>
+
+
+</ul>
+
+
+</nav>
+
+
+</header>
 
 
 
-<form method="POST" action="/scan_url">
 
+
+<section class="tool-page">
+
+
+<h1>
+🌐 URL Security Scanner
+</h1>
+
+
+<p>
+Check website safety using Cyber Shield AI
+</p>
+
+
+
+
+<div class="tool-box">
 
 
 <input
 
 type="text"
 
-name="url"
+id="url"
 
-placeholder="Enter Website URL"
-
-required>
-
+placeholder="https://example.com">
 
 
 <br>
 
 
-<button>
+<button onclick="scanURL()">
 
-Scan URL
+Scan Website
 
 </button>
 
 
-
-</form>
-
+</div>
 
 
-{% if result %}
 
 
-<div class="result">
+<div id="result" class="result-box">
 
 
-{{ result }}
+Waiting for scan...
 
 
 </div>
 
 
-{% endif %}
+
+
+</section>
 
 
 
-</div>
+
+
+
+<script>
+
+
+function scanURL(){
+
+
+
+let url = document.getElementById("url").value;
+
+
+
+if(url.trim()==""){
+
+
+document.getElementById("result").innerHTML =
+
+"❌ Please enter URL";
+
+
+return;
+
+
+}
+
+
+
+
+
+fetch("/scan_url",{
+
+
+method:"POST",
+
+
+headers:{
+
+
+"Content-Type":"application/json"
+
+
+},
+
+
+body:JSON.stringify({
+
+
+url:url
+
+
+})
+
+
+})
+
+
+.then(response=>response.json())
+
+
+.then(data=>{
+
+
+document.getElementById("result").innerHTML = `
+
+
+<h3>Scan Result</h3>
+
+
+<p>
+
+<strong>Status:</strong>
+
+${data.status}
+
+</p>
+
+
+<p>
+
+<strong>Security Score:</strong>
+
+${data.score}/100
+
+</p>
+
+
+`;
+
+
+
+})
+
+
+.catch(error=>{
+
+
+document.getElementById("result").innerHTML =
+
+"❌ Server Error";
+
+
+console.log(error);
+
+
+});
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+
+
+<footer>
+
+
+<p>
+
+© 2026 Cyber Shield AI | URL Scanner
+
+</p>
+
+
+</footer>
+
+
+
+
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 
 
 </body>
-
 
 </html>
