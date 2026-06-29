@@ -335,7 +335,7 @@ def report():
     conn = get_db()
 
     scans = conn.execute(
-        "SELECT * FROM scans ORDER BY id DESC"
+        "SELECT * FROM scans"
     ).fetchall()
 
     conn.close()
@@ -348,29 +348,39 @@ def report():
 
     story.append(
         Paragraph(
-            "Cyber Shield AI Security Report",
+            "Cyber Shield AI Report",
             styles["Title"]
         )
-    )
-
-    story.append(
-        Paragraph("<br/>", styles["Normal"])
     )
 
     for scan in scans:
 
         story.append(
+
             Paragraph(
-                f"""
-                <b>Type:</b> {scan['scan_type']}<br/>
-                <b>Input:</b> {scan['input_value']}<br/>
-                <b>Result:</b> {scan['result']}<br/>
-                <b>Score:</b> {scan['score']}<br/>
-                <b>Time:</b> {scan['scan_time']}<br/><br/>
-                """,
-                styles["BodyText"]
-            )
-        )
+
+f"""
+Type:
+{scan.get('scan_type','N/A')}<br/>
+
+Input:
+{scan.get('input_value','N/A')}<br/>
+
+Result:
+{scan.get('result','N/A')}<br/>
+
+Score:
+{scan.get('score',0)}<br/>
+
+Time:
+{scan.get('scan_time','N/A')}
+""",
+
+styles["BodyText"]
+
+)
+
+)
 
     doc.build(story)
 
@@ -378,7 +388,6 @@ def report():
         filename,
         as_attachment=True
     )
-
 
 # ===============================
 # Run Flask
