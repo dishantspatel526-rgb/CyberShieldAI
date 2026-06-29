@@ -1,5 +1,5 @@
 Flask
+gunicorn
 requests
-validators
 email-validator
-fpdf2
+reportlab
