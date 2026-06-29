@@ -7,57 +7,197 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
+
+<style>
+
+body{
+
+background:#050816;
+
+color:white;
+
+font-family:Poppins,sans-serif;
+
+}
+
+
+
+.hero{
+
+text-align:center;
+
+margin-top:100px;
+
+}
+
+
+
+.logo{
+
+font-size:45px;
+
+color:#00ff99;
+
+text-shadow:0 0 20px #00ff99;
+
+}
+
+
+
+.hero p{
+
+font-size:20px;
+
+color:#aaa;
+
+}
+
+
+
+.buttons{
+
+margin-top:40px;
+
+}
+
+
+
+.buttons a{
+
+
+display:inline-block;
+
+margin:10px;
+
+padding:15px 25px;
+
+background:#00ff99;
+
+color:black;
+
+text-decoration:none;
+
+border-radius:10px;
+
+font-weight:bold;
+
+
+}
+
+
+
+.buttons a:hover{
+
+box-shadow:0 0 25px #00ff99;
+
+}
+
+
+
+.features{
+
+
+display:flex;
+
+justify-content:center;
+
+gap:20px;
+
+margin-top:60px;
+
+flex-wrap:wrap;
+
+
+}
+
+
+
+.card{
+
+
+background:#111827;
+
+padding:25px;
+
+width:220px;
+
+border-radius:15px;
+
+border:1px solid #00ff99;
+
+text-align:center;
+
+
+}
+
+
+
+.card h2{
+
+color:#00ff99;
+
+}
+
+
+
+</style>
+
+
 </head>
 
 
 <body>
 
 
-<nav>
-
-<div class="logo">
-🛡 Cyber Shield AI
-</div>
-
-
-<ul>
-
-<li><a href="/">Home</a></li>
-
-<li><a href="/scanner">URL Scanner</a></li>
-
-<li><a href="/password">Password</a></li>
-
-<li><a href="/email">Email</a></li>
-
-<li><a href="/dashboard">Dashboard</a></li>
-
-
-</ul>
-
-
-</nav>
-
-
 
 <div class="hero">
 
 
+
+<div class="logo">
+
+🛡 Cyber Shield AI
+
+</div>
+
+
+
 <h1>
+
 AI Powered Cyber Security Platform
+
 </h1>
 
 
+
 <p>
-Scan URLs, Check Password Strength and Protect Digital Identity
+
+Scan URLs • Protect Passwords • Detect Threats • Secure Digital World
+
 </p>
+
+
+
+<div class="buttons">
 
 
 <a href="/scanner">
 
-<button>
-Start Security Scan
-</button>
+🔍 URL Scanner
+
+</a>
+
+
+<a href="/chatbot">
+
+🤖 AI Assistant
+
+</a>
+
+
+<a href="/dashboard">
+
+📊 Dashboard
 
 </a>
 
@@ -66,6 +206,71 @@ Start Security Scan
 
 
 
+</div>
+
+
+
+
+
+<div class="features">
+
+
+
+<div class="card">
+
+<h2>🔐</h2>
+
+<h3>Password Security</h3>
+
+<p>Check password strength</p>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>🌐</h2>
+
+<h3>IP Checker</h3>
+
+<p>Analyze IP security</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>🧬</h2>
+
+<h3>Hash Checker</h3>
+
+<p>Verify file integrity</p>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h2>📄</h2>
+
+<h3>PDF Report</h3>
+
+<p>Generate security report</p>
+
+</div>
+
+
+
+</div>
+
+
+
 </body>
+
 
 </html>

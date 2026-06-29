@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
-<title>Cyber Shield AI - URL Scanner</title>
+<title>IP Security Checker</title>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -21,19 +22,20 @@ font-family:Poppins;
 }
 
 
-.container{
+
+.box{
 
 width:500px;
 
 margin:100px auto;
 
-background:#111827;
-
 padding:30px;
 
-border-radius:20px;
+background:#111827;
 
 border:1px solid #00ff99;
+
+border-radius:20px;
 
 text-align:center;
 
@@ -42,17 +44,14 @@ box-shadow:0 0 20px #00ff99;
 }
 
 
-input{
 
-width:90%;
+input{
 
 padding:15px;
 
+width:90%;
+
 border-radius:10px;
-
-border:none;
-
-margin:15px;
 
 }
 
@@ -60,7 +59,9 @@ margin:15px;
 
 button{
 
-padding:15px 25px;
+margin-top:15px;
+
+padding:15px;
 
 background:#00ff99;
 
@@ -69,8 +70,6 @@ border:none;
 border-radius:10px;
 
 font-weight:bold;
-
-cursor:pointer;
 
 }
 
@@ -84,46 +83,26 @@ color:#00ff99;
 
 white-space:pre-line;
 
-font-size:18px;
-
 }
-
 
 </style>
 
-
 </head>
-
 
 
 <body>
 
 
-<div class="container">
+<div class="box">
 
 
-
-<h1>🛡 Cyber Shield AI</h1>
-
-
-<h2>URL Security Scanner</h2>
+<h1>🛡 IP Security Checker</h1>
 
 
-
-<form method="POST" action="/scan_url">
-
+<form method="POST">
 
 
-<input
-
-type="text"
-
-name="url"
-
-placeholder="Enter Website URL"
-
-required>
-
+<input name="ip" placeholder="Enter IP Address">
 
 
 <br>
@@ -131,37 +110,26 @@ required>
 
 <button>
 
-Scan URL
+Check IP
 
 </button>
-
 
 
 </form>
 
 
 
-{% if result %}
-
-
 <div class="result">
 
-
-{{ result }}
-
+{{result}}
 
 </div>
 
 
-{% endif %}
-
-
 
 </div>
-
 
 
 </body>
-
 
 </html>

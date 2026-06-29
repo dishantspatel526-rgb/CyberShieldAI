@@ -1,14 +1,17 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
-<title>Cyber Shield AI - URL Scanner</title>
+<title>Hash Checker</title>
+
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 
 <style>
+
 
 body{
 
@@ -21,7 +24,9 @@ font-family:Poppins;
 }
 
 
-.container{
+
+.box{
+
 
 width:500px;
 
@@ -42,25 +47,10 @@ box-shadow:0 0 20px #00ff99;
 }
 
 
-input{
-
-width:90%;
-
-padding:15px;
-
-border-radius:10px;
-
-border:none;
-
-margin:15px;
-
-}
-
-
 
 button{
 
-padding:15px 25px;
+padding:15px;
 
 background:#00ff99;
 
@@ -69,8 +59,6 @@ border:none;
 border-radius:10px;
 
 font-weight:bold;
-
-cursor:pointer;
 
 }
 
@@ -84,9 +72,8 @@ color:#00ff99;
 
 white-space:pre-line;
 
-font-size:18px;
-
 }
+
 
 
 </style>
@@ -95,70 +82,43 @@ font-size:18px;
 </head>
 
 
-
 <body>
 
 
-<div class="container">
+<div class="box">
 
 
-
-<h1>🛡 Cyber Shield AI</h1>
-
-
-<h2>URL Security Scanner</h2>
+<h1>🧬 File Hash Checker</h1>
 
 
-
-<form method="POST" action="/scan_url">
-
+<form method="POST" enctype="multipart/form-data">
 
 
-<input
-
-type="text"
-
-name="url"
-
-placeholder="Enter Website URL"
-
-required>
+<input type="file" name="file">
 
 
-
-<br>
+<br><br>
 
 
 <button>
 
-Scan URL
+Generate Hash
 
 </button>
-
 
 
 </form>
 
 
 
-{% if result %}
-
-
 <div class="result">
 
-
-{{ result }}
-
+{{result}}
 
 </div>
 
 
-{% endif %}
-
-
-
 </div>
-
 
 
 </body>

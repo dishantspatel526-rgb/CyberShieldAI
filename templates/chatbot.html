@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cyber Shield AI Assistant</title>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+<style>
+
+body{
+
+    background:#050816;
+
+    color:white;
+
+    font-family:Poppins,sans-serif;
+
+}
+
+
+
+.chat-wrapper{
+
+    width:90%;
+
+    max-width:700px;
+
+    margin:80px auto;
+
+    background:rgba(0,255,170,0.05);
+
+    border:1px solid #00ff99;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 0 25px #00ff99;
+
+}
+
+
+
+.logo{
+
+    text-align:center;
+
+    font-size:32px;
+
+    color:#00ff99;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#aaa;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.chat-box{
+
+    background:#020409;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    min-height:120px;
+
+    margin-bottom:25px;
+
+    border:1px solid #333;
+
+    white-space:pre-line;
+
+}
+
+
+
+.ai-text{
+
+    color:#00ff99;
+
+    font-size:18px;
+
+}
+
+
+
+.user-text{
+
+    color:#00ccff;
+
+    text-align:right;
+
+    margin:10px;
+
+}
+
+
+
+form{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+
+input{
+
+    flex:1;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:none;
+
+    outline:none;
+
+    background:#111827;
+
+    color:white;
+
+    font-size:16px;
+
+}
+
+
+
+button{
+
+    padding:15px 25px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00ff99;
+
+    color:black;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+    box-shadow:0 0 20px #00ff99;
+
+}
+
+
+
+.status{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    color:#00ff99;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<div class="chat-wrapper">
+
+
+
+<div class="logo">
+
+🛡 Cyber Shield AI
+
+</div>
+
+
+
+<div class="subtitle">
+
+AI Powered Cyber Security Assistant
+
+</div>
+
+
+
+<div class="chat-box">
+
+
+
+{% if message %}
+
+<p class="user-text">
+
+👤 You:
+
+{{ message }}
+
+</p>
+
+{% endif %}
+
+
+
+{% if reply %}
+
+
+<p class="ai-text">
+
+🤖 Cyber Shield AI:
+
+<span id="answer">
+
+{{ reply }}
+
+</span>
+
+</p>
+
+
+{% else %}
+
+
+<p>
+
+Ask me:
+
+<br><br>
+
+🔐 Password Security
+
+<br>
+
+⚠️ Phishing Attack
+
+<br>
+
+🦠 Malware / Virus
+
+<br>
+
+🛡 Firewall
+
+<br>
+
+🔒 2FA Security
+
+<br>
+
+🌐 Online Safety
+
+
+</p>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+<form method="POST">
+
+
+<input
+
+type="text"
+
+name="message"
+
+placeholder="Ask your security question..."
+
+required>
+
+
+<button>
+
+SEND
+
+</button>
+
+
+</form>
+
+
+
+<div class="status">
+
+System Status: ONLINE 🟢
+
+</div>
+
+
+
+</div>
+
+
+
+<script>
+
+
+let text=document.getElementById("answer");
+
+
+if(text){
+
+
+let content=text.innerHTML;
+
+
+text.innerHTML="";
+
+
+let i=0;
+
+
+function typing(){
+
+
+if(i < content.length){
+
+
+text.innerHTML += content.charAt(i);
+
+i++;
+
+
+setTimeout(typing,40);
+
+
+}
+
+
+}
+
+
+typing();
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+</html>
